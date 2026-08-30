@@ -1,0 +1,46 @@
+{
+  "baseline": {
+    "correctness_pass": true,
+    "max_abs_error": 2.7328048417984974e-05,
+    "variant": "baseline",
+    "size": 1048576,
+    "command": [
+      "python",
+      "reference.py",
+      "--variant",
+      "baseline",
+      "--size",
+      "1048576",
+      "--correctness"
+    ],
+    "return_code": 0
+  },
+  "candidate": {
+    "correctness_pass": true,
+    "max_abs_error": 0.0,
+    "variant": "reduction_precision_candidate",
+    "size": 1048576,
+    "command": [
+      "python",
+      "reference.py",
+      "--variant",
+      "reduction_precision_candidate",
+      "--size",
+      "1048576",
+      "--correctness"
+    ],
+    "return_code": 0
+  },
+  "candidate_build": {
+    "status": "PASS",
+    "mode": "cpu_fallback",
+    "command": [
+      "python",
+      "-m",
+      "py_compile",
+      "reference.py"
+    ],
+    "source": "reference.py",
+    "detail": "CUDA compiler unavailable; executed reference runner build check. Variant=reduction_precision_candidate"
+  }
+}

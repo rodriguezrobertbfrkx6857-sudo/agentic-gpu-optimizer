@@ -1,0 +1,90 @@
+{
+  "workload": "reduction_case_study",
+  "environment": {
+    "schema_version": 1,
+    "operating_system": {
+      "system": "Windows",
+      "release": "11",
+      "version": "10.0.26200",
+      "machine": "AMD64"
+    },
+    "python": {
+      "version": "3.13.11",
+      "executable": "redacted"
+    },
+    "toolchain": {
+      "nvcc": null,
+      "cmake": null,
+      "git": "git version 2.51.1.windows.1",
+      "gh": "gh version 2.96.0 (2026-07-02)",
+      "ncu": null,
+      "nsys": null
+    },
+    "torch": {
+      "installed": true,
+      "version": "2.9.1+cpu",
+      "cuda_available": false,
+      "compiled_cuda": null,
+      "device_count": 0,
+      "devices": []
+    },
+    "nvidia": {
+      "available": false,
+      "query": null
+    },
+    "hardware_mode": "cpu_only"
+  },
+  "build": {
+    "status": "PASS",
+    "mode": "cpu_fallback",
+    "command": [
+      "python",
+      "-m",
+      "py_compile",
+      "reference.py"
+    ],
+    "source": "reference.py",
+    "detail": "CUDA compiler unavailable; executed reference runner build check. Variant=baseline"
+  },
+  "correctness": {
+    "correctness_pass": true,
+    "max_abs_error": 2.7328048417984974e-05,
+    "variant": "baseline",
+    "size": 1048576,
+    "command": [
+      "python",
+      "reference.py",
+      "--variant",
+      "baseline",
+      "--size",
+      "1048576",
+      "--correctness"
+    ],
+    "return_code": 0
+  },
+  "benchmark": {
+    "correctness_pass": true,
+    "max_abs_error": 2.7328048417984974e-05,
+    "variant": "baseline",
+    "size": 1048576,
+    "status": "BENCHMARKED_CPU_ONLY",
+    "median_ms": 0.19345,
+    "mean_ms": 0.193075,
+    "min_ms": 0.1878,
+    "std_ms": 0.0027738736452837935,
+    "command": [
+      "python",
+      "reference.py",
+      "--variant",
+      "baseline",
+      "--size",
+      "1048576",
+      "--warmup",
+      "3",
+      "--iterations",
+      "8",
+      "--benchmark"
+    ],
+    "return_code": 0
+  }
+}

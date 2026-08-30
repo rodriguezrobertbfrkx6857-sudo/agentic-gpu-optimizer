@@ -1,0 +1,5 @@
+--- a/workloads/reduction/baseline.cu
++++ b/workloads/reduction/baseline.cu
+@@
+- atomicAdd(output, input[index])
++ atomicAdd(double_output, static_cast<double>(input[index]))

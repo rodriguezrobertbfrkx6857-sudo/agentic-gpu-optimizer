@@ -1,0 +1,5 @@
+--- a/workloads/transpose/baseline.cu
++++ b/workloads/transpose/baseline.cu
+@@
+- output[col * rows + row] = input[row * cols + col]
++ shared float tile[32][33]; load, synchronize, and write the transposed tile

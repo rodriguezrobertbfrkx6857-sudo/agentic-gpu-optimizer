@@ -1,0 +1,52 @@
+{
+  "baseline": {
+    "correctness_pass": true,
+    "max_abs_error": 0.0,
+    "variant": "baseline",
+    "size": 192,
+    "status": "BENCHMARKED_CPU_ONLY",
+    "median_ms": 4.325,
+    "mean_ms": 4.5205375000000005,
+    "min_ms": 4.1801,
+    "std_ms": 0.45260050524027245,
+    "command": [
+      "python",
+      "reference.py",
+      "--variant",
+      "baseline",
+      "--size",
+      "192",
+      "--warmup",
+      "3",
+      "--iterations",
+      "8",
+      "--benchmark"
+    ],
+    "return_code": 0
+  },
+  "candidate": {
+    "correctness_pass": true,
+    "max_abs_error": 0.0,
+    "variant": "transpose_tiled_padded",
+    "size": 192,
+    "status": "BENCHMARKED_CPU_ONLY",
+    "median_ms": 0.01405,
+    "mean_ms": 0.0139625,
+    "min_ms": 0.0134,
+    "std_ms": 0.00034977671449083037,
+    "command": [
+      "python",
+      "reference.py",
+      "--variant",
+      "transpose_tiled_padded",
+      "--size",
+      "192",
+      "--warmup",
+      "3",
+      "--iterations",
+      "8",
+      "--benchmark"
+    ],
+    "return_code": 0
+  }
+}

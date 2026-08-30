@@ -1,0 +1,39 @@
+{
+  "decision": "REJECT",
+  "reason": "candidate regressed or benchmark metrics were invalid",
+  "correctness_gate": {
+    "status": "PASS",
+    "passed": true,
+    "evidence": {
+      "correctness_pass": true,
+      "max_abs_error": 0.0,
+      "variant": "reduction_precision_candidate",
+      "size": 1048576,
+      "command": [
+        "python",
+        "reference.py",
+        "--variant",
+        "reduction_precision_candidate",
+        "--size",
+        "1048576",
+        "--correctness"
+      ],
+      "return_code": 0
+    }
+  },
+  "performance_gate": {
+    "status": "FAIL",
+    "baseline_median_ms": 0.19345,
+    "candidate_median_ms": 3.04645,
+    "improvement": -14.747996898423365,
+    "speedup": 0.06350013950663888,
+    "baseline_cv": 0.014366819346284053,
+    "candidate_cv": 0.15704650594346162,
+    "stable": true,
+    "threshold": 0.03,
+    "max_cv": 0.25
+  },
+  "workload": "reduction_case_study",
+  "candidate": "precision_reduction_hypothesis",
+  "candidate_variant": "reduction_precision_candidate"
+}

@@ -1,0 +1,6 @@
+{
+  "available": false,
+  "status": "NOT_AVAILABLE",
+  "note": "Nsight profiling was not available in the current environment.",
+  "workload": "transpose_case_study"
+}
