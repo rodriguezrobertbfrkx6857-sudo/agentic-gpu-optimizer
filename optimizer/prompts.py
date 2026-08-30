@@ -13,6 +13,7 @@ The candidate is a hypothesis. It must compile, pass the workload correctness ga
 ## Workload
 
 - Source: `{config.source_file.name}`
+- Candidate source: `{config.candidate_source_file.name}`
 - Fallback runner: `{config.fallback_script.name}`
 - Input size: `{config.input_size}`
 - Baseline variant: `{config.baseline_variant}`
@@ -23,6 +24,5 @@ The candidate is a hypothesis. It must compile, pass the workload correctness ga
 
 {config.candidate.rationale}
 
-The candidate must remain independently testable. Do not treat generated code as trusted until the gates pass.
+Return a real unified diff that adds or updates the configured candidate source. The diff is path-validated and applied in an isolated workspace before the candidate build. The candidate must remain independently testable. Do not treat generated code as trusted until the gates pass; CPU fallback timings cannot establish CUDA acceptance.
 """
-

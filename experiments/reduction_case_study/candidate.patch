@@ -1,5 +1,49 @@
---- a/workloads/reduction/baseline.cu
-+++ b/workloads/reduction/baseline.cu
-@@
-- atomicAdd(output, input[index])
-+ atomicAdd(double_output, static_cast<double>(input[index]))
+diff --git a/candidate.cu b/candidate.cu
+new file mode 100644
+--- /dev/null
++++ b/candidate.cu
+@@ -0,0 +1,44 @@
++#include "runner_common.cuh"
++
++namespace {
++
++__global__ void reduction_precision_candidate_kernel(const float* input, float* output, int count) {
++    extern __shared__ double partial[];
++    const int thread_index = threadIdx.x;
++    const int index = blockIdx.x * blockDim.x + thread_index;
++    const int stride = gridDim.x * blockDim.x;
++    double value = 0.0;
++    for (int current = index; current < count; current += stride) {
++        value += static_cast<double>(input[current]);
++    }
++    partial[thread_index] = value;
++    __syncthreads();
++    for (int offset = blockDim.x / 2; offset > 0; offset >>= 1) {
++        if (thread_index < offset) partial[thread_index] += partial[thread_index + offset];
++        __syncthreads();
++    }
++    if (thread_index == 0) atomicAdd(output, static_cast<float>(partial[0]));
++}
++
++void launch_reduction_precision_candidate(const float* input, float* output, int count,
++                                           cudaStream_t stream) {
++    constexpr int block_size = 256;
++    const int blocks = (count + block_size * 4 - 1) / (block_size * 4);
++    OPTIMIZER_CUDA_CHECK(cudaMemsetAsync(output, 0, sizeof(float), stream));
++    reduction_precision_candidate_kernel<<<blocks, block_size, block_size * sizeof(double), stream>>>(
++        input, output, count);
++    OPTIMIZER_CUDA_CHECK(cudaGetLastError());
++}
++
++}  // namespace
++
++int main(int argc, char** argv) {
++    try {
++        const auto options = optimizer_reduction::parse_options(argc, argv);
++        return optimizer_reduction::run_workload(
++            options, "reduction_precision_candidate", launch_reduction_precision_candidate);
++    } catch (const std::exception& error) {
++        std::cerr << error.what() << '\n';
++        return 1;
++    }
++}

@@ -15,6 +15,9 @@ def decide(config, correctness: dict, baseline_benchmark: dict, candidate_benchm
     if not correctness_gate["passed"]:
         decision = "REJECT"
         reason = "correctness gate failed"
+    elif performance_gate["status"] == "PASS" and not performance_gate["cuda_validated"]:
+        decision = "INCONCLUSIVE"
+        reason = "CPU fallback evidence is insufficient for a CUDA acceptance decision"
     elif performance_gate["status"] == "PASS":
         decision = "ACCEPT"
         reason = "correctness passed and performance threshold/stability gates passed"
@@ -22,7 +25,7 @@ def decide(config, correctness: dict, baseline_benchmark: dict, candidate_benchm
         decision = "REJECT"
         reason = "candidate regressed or benchmark metrics were invalid"
     else:
-        decision = "INCONCLUSIVE"
+        decision = "REJECT" if config.gate.low_improvement_policy == "reject" else "INCONCLUSIVE"
         reason = "candidate was correct but did not clear the configured performance/stability gate"
     return {
         "decision": decision,
@@ -30,4 +33,3 @@ def decide(config, correctness: dict, baseline_benchmark: dict, candidate_benchm
         "correctness_gate": correctness_gate,
         "performance_gate": performance_gate,
     }
-

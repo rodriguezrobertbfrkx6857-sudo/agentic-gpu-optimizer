@@ -1,20 +1,34 @@
 {
   "workload": "transpose_case_study",
   "environment": {
-    "schema_version": 1,
+    "schema_version": 2,
+    "captured_by": "optimizer.environment.collect_environment",
     "operating_system": {
       "system": "Windows",
       "release": "11",
       "version": "10.0.26200",
-      "machine": "AMD64"
+      "machine": "AMD64",
+      "processor": "Intel64 Family 6 Model 170 Stepping 4, GenuineIntel"
     },
+    "cpu": {
+      "name": "Intel64 Family 6 Model 170 Stepping 4, GenuineIntel",
+      "logical_processors": 22
+    },
+    "ram_bytes": 33945935872,
+    "display_adapters": [
+      {
+        "name": "Intel(R) Arc(TM) Graphics",
+        "adapter_ram_bytes": 2147479552,
+        "driver_version": "32.0.101.5768"
+      }
+    ],
     "python": {
-      "version": "3.13.11",
-      "executable": "redacted"
+      "version": "3.13.11"
     },
     "toolchain": {
       "nvcc": null,
       "cmake": null,
+      "cxx": "g++.EXE (Rev8, Built by MSYS2 project) 15.2.0",
       "git": "git version 2.51.1.windows.1",
       "gh": "gh version 2.96.0 (2026-07-02)",
       "ncu": null,
@@ -26,17 +40,23 @@
       "cuda_available": false,
       "compiled_cuda": null,
       "device_count": 0,
-      "devices": []
+      "devices": [],
+      "capabilities": []
     },
     "nvidia": {
       "available": false,
-      "query": null
+      "executable": false,
+      "devices": [],
+      "reason": "nvidia-smi was not found"
     },
+    "cuda_workflow_available": false,
+    "github_cli_authenticated": true,
     "hardware_mode": "cpu_only"
   },
+  "workspace": "baseline_workspace",
   "build": {
     "status": "PASS",
-    "mode": "cpu_fallback",
+    "mode": "cpu_reference",
     "command": [
       "python",
       "-m",
@@ -44,13 +64,33 @@
       "reference.py"
     ],
     "source": "reference.py",
-    "detail": "CUDA compiler unavailable; executed reference runner build check. Variant=baseline"
+    "executable": null,
+    "cuda_validated": false,
+    "hardware_mode": "cpu_only",
+    "detail": "CUDA validation unavailable; compiled Python fallback only for variant=baseline",
+    "return_code": 0,
+    "duration_ms": 137.57239999540616,
+    "compiler_version": null,
+    "source_sha256": "70ccd3f6bb359586728f02a26e1524fb00b038305fadfc1e0a17848838a830cc",
+    "output_sha256": null,
+    "stdout": "",
+    "stderr": "",
+    "timeout_seconds": 60
   },
   "correctness": {
     "correctness_pass": true,
     "max_abs_error": 0.0,
     "variant": "baseline",
     "size": 192,
+    "status": "CORRECTNESS_ONLY_CPU",
+    "backend": "numpy_cpu_reference",
+    "hardware_mode": "cpu_only",
+    "device": "Intel64 Family 6 Model 170 Stepping 4, GenuineIntel",
+    "dtype": "float32",
+    "warmup": 3,
+    "iterations": 8,
+    "timer": "perf_counter_ns",
+    "cuda_validated": false,
     "command": [
       "python",
       "reference.py",
@@ -58,9 +98,15 @@
       "baseline",
       "--size",
       "192",
-      "--correctness"
+      "--mode",
+      "correctness"
     ],
-    "return_code": 0
+    "return_code": 0,
+    "duration_ms": 408.66869999445044,
+    "execution_mode": "cpu_reference",
+    "stdout": "{\"correctness_pass\": true, \"max_abs_error\": 0.0, \"variant\": \"baseline\", \"size\": 192, \"status\": \"CORRECTNESS_ONLY_CPU\", \"backend\": \"numpy_cpu_reference\", \"hardware_mode\": \"cpu_only\", \"device\": \"Intel64 Family 6 Model 170 Stepping 4, GenuineIntel\", \"dtype\": \"float32\", \"warmup\": 3, \"iterations\": 8, \"timer\": \"perf_counter_ns\", \"cuda_validated\": false}\n",
+    "stderr": "",
+    "timeout_seconds": 120
   },
   "benchmark": {
     "correctness_pass": true,
@@ -68,10 +114,18 @@
     "variant": "baseline",
     "size": 192,
     "status": "BENCHMARKED_CPU_ONLY",
-    "median_ms": 4.27195,
-    "mean_ms": 4.3205,
-    "min_ms": 4.1661,
-    "std_ms": 0.15448640716904508,
+    "backend": "numpy_cpu_reference",
+    "hardware_mode": "cpu_only",
+    "device": "Intel64 Family 6 Model 170 Stepping 4, GenuineIntel",
+    "dtype": "float32",
+    "warmup": 3,
+    "iterations": 8,
+    "timer": "perf_counter_ns",
+    "cuda_validated": false,
+    "median_ms": 4.3957999999999995,
+    "mean_ms": 4.44145,
+    "min_ms": 4.2711,
+    "std_ms": 0.16797848076465044,
     "command": [
       "python",
       "reference.py",
@@ -83,8 +137,14 @@
       "3",
       "--iterations",
       "8",
-      "--benchmark"
+      "--mode",
+      "benchmark"
     ],
-    "return_code": 0
+    "return_code": 0,
+    "duration_ms": 444.3420000025071,
+    "execution_mode": "cpu_reference",
+    "stdout": "{\"correctness_pass\": true, \"max_abs_error\": 0.0, \"variant\": \"baseline\", \"size\": 192, \"status\": \"BENCHMARKED_CPU_ONLY\", \"backend\": \"numpy_cpu_reference\", \"hardware_mode\": \"cpu_only\", \"device\": \"Intel64 Family 6 Model 170 Stepping 4, GenuineIntel\", \"dtype\": \"float32\", \"warmup\": 3, \"iterations\": 8, \"timer\": \"perf_counter_ns\", \"cuda_validated\": false, \"median_ms\": 4.3957999999999995, \"mean_ms\": 4.44145, \"min_ms\": 4.2711, \"std_ms\": 0.16797848076465044}\n",
+    "stderr": "",
+    "timeout_seconds": 600
   }
 }

@@ -1,8 +1,30 @@
 {
   "status": "APPLIED",
-  "mode": "isolated_registered_variant",
+  "mode": "isolated_unified_diff",
   "candidate": "tiled_transpose_hypothesis",
   "variant": "transpose_tiled_padded",
   "patch_artifact": "candidate.patch",
-  "note": "The controlled case-study runner applies a provider proposal by selecting an explicit workload variant; arbitrary source execution is not enabled."
+  "workspace": "candidate_workspace",
+  "changed_paths": [
+    "candidate.cu"
+  ],
+  "repository_initialized": true,
+  "check_command": [
+    "git",
+    "apply",
+    "--check",
+    "candidate.patch"
+  ],
+  "check_return_code": 0,
+  "check_stdout": "",
+  "check_stderr": "",
+  "apply_command": [
+    "git",
+    "apply",
+    "candidate.patch"
+  ],
+  "apply_return_code": 0,
+  "apply_stdout": "",
+  "apply_stderr": "",
+  "note": "The provider patch was applied and verified inside an isolated workspace."
 }

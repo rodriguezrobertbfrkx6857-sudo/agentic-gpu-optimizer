@@ -1,0 +1,10 @@
+{
+  "baseline": {
+    "path": "baseline.cu",
+    "sha256": "5600389bd8ab7a2329cbeb4491b5231da9468c8abd9840c5bff3598f5e73c444"
+  },
+  "candidate": {
+    "path": "candidate.cu",
+    "sha256": "bfe8e5f3cb53c3447863ce7e8e8ddc63fe3833712ec5ba34402520cb1d7b28d5"
+  }
+}

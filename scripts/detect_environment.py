@@ -18,6 +18,12 @@ def main() -> None:
     args.output_dir.mkdir(parents=True, exist_ok=True)
     data = collect_environment()
     (args.output_dir / "environment.json").write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+    nvidia_devices = data["nvidia"].get("devices", [])
+    nvidia_text = ", ".join(device.get("name", "unknown") for device in nvidia_devices)
+    if not nvidia_text:
+        nvidia_text = data["nvidia"].get("reason", "not available")
+    adapters = data.get("display_adapters", [])
+    adapter_text = ", ".join(adapter.get("name", "unknown") for adapter in adapters) or "not detected"
     lines = [
         "# Environment Audit",
         "",
@@ -28,7 +34,11 @@ def main() -> None:
         f"- Python: `{data['python']['version']}`",
         f"- PyTorch: `{data['torch'].get('version', 'not installed')}`",
         f"- `torch.cuda.is_available()`: `{data['torch'].get('cuda_available', False)}`",
-        f"- NVIDIA query: `{data['nvidia']['query'] or 'not available'}`",
+        f"- CUDA workflow available: `{data.get('cuda_workflow_available', False)}`",
+        f"- NVIDIA devices: `{nvidia_text}`",
+        f"- Display adapters: `{adapter_text}`",
+        f"- `nvcc`: `{data['toolchain'].get('nvcc') or 'not available'}`",
+        f"- Nsight: `ncu={data['toolchain'].get('ncu') or 'not available'}`, `nsys={data['toolchain'].get('nsys') or 'not available'}`",
         "",
     ]
     if data["hardware_mode"] != "cuda":
@@ -39,4 +49,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

@@ -1,42 +1,28 @@
 {
-  "run_id": "20260830_163642",
-  "decision": "ACCEPT",
+  "run_id": "20260830_181720",
+  "decision": "INCONCLUSIVE",
+  "candidate_application": "APPLIED",
+  "performance_gate": {
+    "status": "PASS",
+    "baseline_median_ms": 4.3957999999999995,
+    "candidate_median_ms": 0.0452,
+    "improvement": 0.989717457573138,
+    "speedup": 97.25221238938053,
+    "baseline_cv": 0.03782063982813055,
+    "candidate_cv": 0.015997620095081478,
+    "stable": true,
+    "threshold": 0.03,
+    "max_cv": 0.25,
+    "cuda_validated": false,
+    "baseline_status": "BENCHMARKED_CPU_ONLY",
+    "candidate_status": "BENCHMARKED_CPU_ONLY",
+    "baseline_backend": "numpy_cpu_reference",
+    "candidate_backend": "numpy_cpu_reference"
+  },
   "correctness": {
-    "baseline": {
-      "correctness_pass": true,
-      "max_abs_error": 0.0,
-      "variant": "baseline",
-      "size": 192,
-      "command": [
-        "python",
-        "reference.py",
-        "--variant",
-        "baseline",
-        "--size",
-        "192",
-        "--correctness"
-      ],
-      "return_code": 0
-    },
-    "candidate": {
-      "correctness_pass": true,
-      "max_abs_error": 0.0,
-      "variant": "transpose_tiled_padded",
-      "size": 192,
-      "command": [
-        "python",
-        "reference.py",
-        "--variant",
-        "transpose_tiled_padded",
-        "--size",
-        "192",
-        "--correctness"
-      ],
-      "return_code": 0
-    },
-    "candidate_build": {
+    "baseline_build": {
       "status": "PASS",
-      "mode": "cpu_fallback",
+      "mode": "cpu_reference",
       "command": [
         "python",
         "-m",
@@ -44,7 +30,133 @@
         "reference.py"
       ],
       "source": "reference.py",
-      "detail": "CUDA compiler unavailable; executed reference runner build check. Variant=transpose_tiled_padded"
+      "executable": null,
+      "cuda_validated": false,
+      "hardware_mode": "cpu_only",
+      "detail": "CUDA validation unavailable; compiled Python fallback only for variant=baseline",
+      "return_code": 0,
+      "duration_ms": 137.57239999540616,
+      "compiler_version": null,
+      "source_sha256": "70ccd3f6bb359586728f02a26e1524fb00b038305fadfc1e0a17848838a830cc",
+      "output_sha256": null,
+      "stdout": "",
+      "stderr": "",
+      "timeout_seconds": 60
+    },
+    "baseline": {
+      "correctness_pass": true,
+      "max_abs_error": 0.0,
+      "variant": "baseline",
+      "size": 192,
+      "status": "CORRECTNESS_ONLY_CPU",
+      "backend": "numpy_cpu_reference",
+      "hardware_mode": "cpu_only",
+      "device": "Intel64 Family 6 Model 170 Stepping 4, GenuineIntel",
+      "dtype": "float32",
+      "warmup": 3,
+      "iterations": 8,
+      "timer": "perf_counter_ns",
+      "cuda_validated": false,
+      "command": [
+        "python",
+        "reference.py",
+        "--variant",
+        "baseline",
+        "--size",
+        "192",
+        "--mode",
+        "correctness"
+      ],
+      "return_code": 0,
+      "duration_ms": 408.66869999445044,
+      "execution_mode": "cpu_reference",
+      "stdout": "{\"correctness_pass\": true, \"max_abs_error\": 0.0, \"variant\": \"baseline\", \"size\": 192, \"status\": \"CORRECTNESS_ONLY_CPU\", \"backend\": \"numpy_cpu_reference\", \"hardware_mode\": \"cpu_only\", \"device\": \"Intel64 Family 6 Model 170 Stepping 4, GenuineIntel\", \"dtype\": \"float32\", \"warmup\": 3, \"iterations\": 8, \"timer\": \"perf_counter_ns\", \"cuda_validated\": false}\n",
+      "stderr": "",
+      "timeout_seconds": 120
+    },
+    "candidate": {
+      "correctness_pass": true,
+      "max_abs_error": 0.0,
+      "variant": "transpose_tiled_padded",
+      "size": 192,
+      "status": "CORRECTNESS_ONLY_CPU",
+      "backend": "numpy_cpu_reference",
+      "hardware_mode": "cpu_only",
+      "device": "Intel64 Family 6 Model 170 Stepping 4, GenuineIntel",
+      "dtype": "float32",
+      "warmup": 3,
+      "iterations": 8,
+      "timer": "perf_counter_ns",
+      "cuda_validated": false,
+      "command": [
+        "python",
+        "reference.py",
+        "--variant",
+        "transpose_tiled_padded",
+        "--size",
+        "192",
+        "--mode",
+        "correctness"
+      ],
+      "return_code": 0,
+      "duration_ms": 361.59760000009555,
+      "execution_mode": "cpu_reference",
+      "stdout": "{\"correctness_pass\": true, \"max_abs_error\": 0.0, \"variant\": \"transpose_tiled_padded\", \"size\": 192, \"status\": \"CORRECTNESS_ONLY_CPU\", \"backend\": \"numpy_cpu_reference\", \"hardware_mode\": \"cpu_only\", \"device\": \"Intel64 Family 6 Model 170 Stepping 4, GenuineIntel\", \"dtype\": \"float32\", \"warmup\": 3, \"iterations\": 8, \"timer\": \"perf_counter_ns\", \"cuda_validated\": false}\n",
+      "stderr": "",
+      "timeout_seconds": 120
+    },
+    "candidate_build": {
+      "status": "PASS",
+      "mode": "cpu_reference",
+      "command": [
+        "python",
+        "-m",
+        "py_compile",
+        "reference.py"
+      ],
+      "source": "reference.py",
+      "executable": null,
+      "cuda_validated": false,
+      "hardware_mode": "cpu_only",
+      "detail": "CUDA validation unavailable; compiled Python fallback only for variant=transpose_tiled_padded",
+      "return_code": 0,
+      "duration_ms": 120.09409999882337,
+      "compiler_version": null,
+      "source_sha256": "70ccd3f6bb359586728f02a26e1524fb00b038305fadfc1e0a17848838a830cc",
+      "output_sha256": null,
+      "stdout": "",
+      "stderr": "",
+      "timeout_seconds": 60
+    },
+    "candidate_application": {
+      "status": "APPLIED",
+      "mode": "isolated_unified_diff",
+      "candidate": "tiled_transpose_hypothesis",
+      "variant": "transpose_tiled_padded",
+      "patch_artifact": "candidate.patch",
+      "workspace": "candidate_workspace",
+      "changed_paths": [
+        "candidate.cu"
+      ],
+      "repository_initialized": true,
+      "check_command": [
+        "git",
+        "apply",
+        "--check",
+        "candidate.patch"
+      ],
+      "check_return_code": 0,
+      "check_stdout": "",
+      "check_stderr": "",
+      "apply_command": [
+        "git",
+        "apply",
+        "candidate.patch"
+      ],
+      "apply_return_code": 0,
+      "apply_stdout": "",
+      "apply_stderr": "",
+      "note": "The provider patch was applied and verified inside an isolated workspace."
     }
   }
 }

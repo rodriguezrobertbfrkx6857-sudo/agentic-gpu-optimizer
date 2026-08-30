@@ -13,7 +13,7 @@ workload + test/benchmark spec
           ↓
 build → correctness → benchmark → profiler discovery
           ↓
-provider hypothesis → candidate build → correctness → benchmark
+provider hypothesis → validate/apply unified diff → candidate build → correctness → benchmark
           ↓
                   ACCEPT / REJECT / INCONCLUSIVE
 ```
@@ -33,14 +33,14 @@ To run one configuration:
 python -m optimizer.orchestrator examples/transpose_case_study.yaml
 ```
 
-Each run writes the requested artifacts under `runs/YYYYMMDD_HHMMSS/`. The two public-facing summaries and artifacts are copied to [experiments/transpose_case_study](experiments/transpose_case_study) and [experiments/reduction_case_study](experiments/reduction_case_study).
+Each run writes the requested artifacts under `runs/YYYYMMDD_HHMMSS/`. The two public-facing summaries and artifacts are copied to [experiments/transpose_case_study](experiments/transpose_case_study) and [experiments/reduction_case_study](experiments/reduction_case_study). Candidate code is applied only inside a fresh run-local workspace after path validation and `git apply --check`.
 
 ## Case studies
 
-- Transpose: scalar CPU reference versus a NumPy analogue of the coalesced 32×33 tiled transpose. The correctness gate runs before timing; the measured decision is generated from the current host.
+- Transpose: scalar CPU reference versus a tiled NumPy analogue of the coalesced 32×33 CUDA transpose. The correctness gate runs before timing; the measured decision is generated from the current host, and CPU-only speedups are not CUDA claims.
 - Reduction: a fast float32 baseline versus a precision-oriented float64 conversion candidate. It is intentionally useful as a rejection example when added precision does not pay for its conversion cost.
 
-Inspect `decision.json`, `correctness.json`, `benchmark.json`, `optimization_prompt.md`, `candidate.patch`, and `candidate_application.json` in each experiment directory. The controlled runner applies a proposal by selecting an explicit registered workload variant; it does not execute arbitrary patch text. No decision is based on the candidate text alone.
+Inspect `environment.json`, `source_hashes.json`, `baseline_build.json`, `candidate_build.json`, `decision.json`, `correctness.json`, `benchmark.json`, `optimization_prompt.md`, `candidate.patch`, and `candidate_application.json` in each experiment directory. The runner records whether the real unified diff was applied, whether `nvcc` built the candidate, and which backend produced the timing. No decision is based on the candidate text alone.
 
 ## Providers
 
@@ -48,6 +48,6 @@ Inspect `decision.json`, `correctness.json`, `benchmark.json`, `optimization_pro
 
 ## CUDA path and limitations
 
-The `.cu` files are small standalone workload sources designed to be integrated with a target-specific build. The current runner executes the Python reference path when CUDA is unavailable and records `NOT BENCHMARKED ON CURRENT HARDWARE` for GPU claims. Nsight data is reported as unavailable when `ncu` and `nsys` are absent; no profiler counters are inferred from wall-clock timing.
+The `.cu` files are standalone workload sources with a common CLI. On a CUDA host, the runner builds baseline and candidate executables with `nvcc`, runs correctness before benchmarking, times kernels with CUDA Events, and can invoke `ncu` or `nsys`. On the current CPU-only host it executes the Python reference path, records `NOT BENCHMARKED ON CURRENT HARDWARE`, and marks the decision `INCONCLUSIVE` when a CPU-only improvement cannot establish CUDA acceptance. No profiler counters are inferred from wall-clock timing.
 
 This repository is a workflow demonstration, not an autonomous code-trust mechanism. AI-generated code is never accepted without validation, and the decision gate is the source of truth.

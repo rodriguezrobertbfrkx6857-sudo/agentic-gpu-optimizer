@@ -5,10 +5,18 @@
     "variant": "baseline",
     "size": 192,
     "status": "BENCHMARKED_CPU_ONLY",
-    "median_ms": 4.27195,
-    "mean_ms": 4.3205,
-    "min_ms": 4.1661,
-    "std_ms": 0.15448640716904508,
+    "backend": "numpy_cpu_reference",
+    "hardware_mode": "cpu_only",
+    "device": "Intel64 Family 6 Model 170 Stepping 4, GenuineIntel",
+    "dtype": "float32",
+    "warmup": 3,
+    "iterations": 8,
+    "timer": "perf_counter_ns",
+    "cuda_validated": false,
+    "median_ms": 4.3957999999999995,
+    "mean_ms": 4.44145,
+    "min_ms": 4.2711,
+    "std_ms": 0.16797848076465044,
     "command": [
       "python",
       "reference.py",
@@ -20,9 +28,15 @@
       "3",
       "--iterations",
       "8",
-      "--benchmark"
+      "--mode",
+      "benchmark"
     ],
-    "return_code": 0
+    "return_code": 0,
+    "duration_ms": 444.3420000025071,
+    "execution_mode": "cpu_reference",
+    "stdout": "{\"correctness_pass\": true, \"max_abs_error\": 0.0, \"variant\": \"baseline\", \"size\": 192, \"status\": \"BENCHMARKED_CPU_ONLY\", \"backend\": \"numpy_cpu_reference\", \"hardware_mode\": \"cpu_only\", \"device\": \"Intel64 Family 6 Model 170 Stepping 4, GenuineIntel\", \"dtype\": \"float32\", \"warmup\": 3, \"iterations\": 8, \"timer\": \"perf_counter_ns\", \"cuda_validated\": false, \"median_ms\": 4.3957999999999995, \"mean_ms\": 4.44145, \"min_ms\": 4.2711, \"std_ms\": 0.16797848076465044}\n",
+    "stderr": "",
+    "timeout_seconds": 600
   },
   "candidate": {
     "correctness_pass": true,
@@ -30,10 +44,18 @@
     "variant": "transpose_tiled_padded",
     "size": 192,
     "status": "BENCHMARKED_CPU_ONLY",
-    "median_ms": 0.01895,
-    "mean_ms": 0.01885,
-    "min_ms": 0.0176,
-    "std_ms": 0.0006284902544988268,
+    "backend": "numpy_cpu_reference",
+    "hardware_mode": "cpu_only",
+    "device": "Intel64 Family 6 Model 170 Stepping 4, GenuineIntel",
+    "dtype": "float32",
+    "warmup": 3,
+    "iterations": 8,
+    "timer": "perf_counter_ns",
+    "cuda_validated": false,
+    "median_ms": 0.0452,
+    "mean_ms": 0.045399999999999996,
+    "min_ms": 0.0446,
+    "std_ms": 0.000726291952316699,
     "command": [
       "python",
       "reference.py",
@@ -45,8 +67,16 @@
       "3",
       "--iterations",
       "8",
-      "--benchmark"
+      "--mode",
+      "benchmark"
     ],
-    "return_code": 0
-  }
+    "return_code": 0,
+    "duration_ms": 382.3757999925874,
+    "execution_mode": "cpu_reference",
+    "stdout": "{\"correctness_pass\": true, \"max_abs_error\": 0.0, \"variant\": \"transpose_tiled_padded\", \"size\": 192, \"status\": \"BENCHMARKED_CPU_ONLY\", \"backend\": \"numpy_cpu_reference\", \"hardware_mode\": \"cpu_only\", \"device\": \"Intel64 Family 6 Model 170 Stepping 4, GenuineIntel\", \"dtype\": \"float32\", \"warmup\": 3, \"iterations\": 8, \"timer\": \"perf_counter_ns\", \"cuda_validated\": false, \"median_ms\": 0.0452, \"mean_ms\": 0.045399999999999996, \"min_ms\": 0.0446, \"std_ms\": 0.000726291952316699}\n",
+    "stderr": "",
+    "timeout_seconds": 600
+  },
+  "hardware_mode": "cpu_only",
+  "cuda_validated": false
 }

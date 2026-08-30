@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "mode": "cpu_reference",
+  "command": [
+    "python",
+    "-m",
+    "py_compile",
+    "reference.py"
+  ],
+  "source": "reference.py",
+  "executable": null,
+  "cuda_validated": false,
+  "hardware_mode": "cpu_only",
+  "detail": "CUDA validation unavailable; compiled Python fallback only for variant=transpose_tiled_padded",
+  "return_code": 0,
+  "duration_ms": 120.09409999882337,
+  "compiler_version": null,
+  "source_sha256": "70ccd3f6bb359586728f02a26e1524fb00b038305fadfc1e0a17848838a830cc",
+  "output_sha256": null,
+  "stdout": "",
+  "stderr": "",
+  "timeout_seconds": 60
+}

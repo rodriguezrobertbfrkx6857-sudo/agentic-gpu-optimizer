@@ -9,6 +9,15 @@
       "max_abs_error": 0.0,
       "variant": "reduction_precision_candidate",
       "size": 1048576,
+      "status": "CORRECTNESS_ONLY_CPU",
+      "backend": "numpy_cpu_reference",
+      "hardware_mode": "cpu_only",
+      "device": "Intel64 Family 6 Model 170 Stepping 4, GenuineIntel",
+      "dtype": "float32",
+      "warmup": 3,
+      "iterations": 8,
+      "timer": "perf_counter_ns",
+      "cuda_validated": false,
       "command": [
         "python",
         "reference.py",
@@ -16,24 +25,36 @@
         "reduction_precision_candidate",
         "--size",
         "1048576",
-        "--correctness"
+        "--mode",
+        "correctness"
       ],
-      "return_code": 0
+      "return_code": 0,
+      "duration_ms": 354.81679999793414,
+      "execution_mode": "cpu_reference",
+      "stdout": "{\"correctness_pass\": true, \"max_abs_error\": 0.0, \"variant\": \"reduction_precision_candidate\", \"size\": 1048576, \"status\": \"CORRECTNESS_ONLY_CPU\", \"backend\": \"numpy_cpu_reference\", \"hardware_mode\": \"cpu_only\", \"device\": \"Intel64 Family 6 Model 170 Stepping 4, GenuineIntel\", \"dtype\": \"float32\", \"warmup\": 3, \"iterations\": 8, \"timer\": \"perf_counter_ns\", \"cuda_validated\": false}\n",
+      "stderr": "",
+      "timeout_seconds": 120
     }
   },
   "performance_gate": {
     "status": "FAIL",
-    "baseline_median_ms": 0.1846,
-    "candidate_median_ms": 2.463,
-    "improvement": -12.342361863488625,
-    "speedup": 0.07494924888347543,
-    "baseline_cv": 0.02973713562907381,
-    "candidate_cv": 0.2331061081996846,
+    "baseline_median_ms": 0.33345,
+    "candidate_median_ms": 2.27435,
+    "improvement": -5.820662768031188,
+    "speedup": 0.14661331809088313,
+    "baseline_cv": 0.12402574225637794,
+    "candidate_cv": 0.07534759077054021,
     "stable": true,
     "threshold": 0.03,
-    "max_cv": 0.25
+    "max_cv": 0.25,
+    "cuda_validated": false,
+    "baseline_status": "BENCHMARKED_CPU_ONLY",
+    "candidate_status": "BENCHMARKED_CPU_ONLY",
+    "baseline_backend": "numpy_cpu_reference",
+    "candidate_backend": "numpy_cpu_reference"
   },
   "workload": "reduction_case_study",
   "candidate": "precision_reduction_hypothesis",
-  "candidate_variant": "reduction_precision_candidate"
+  "candidate_variant": "reduction_precision_candidate",
+  "candidate_application": "APPLIED"
 }

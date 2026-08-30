@@ -1,6 +1,7 @@
 {
   "available": false,
   "status": "NOT_AVAILABLE",
-  "note": "Nsight profiling was not available in the current environment.",
+  "hardware_mode": "cpu_only",
+  "note": "Nsight profiling was not run because a validated CUDA executable is unavailable.",
   "workload": "reduction_case_study"
 }

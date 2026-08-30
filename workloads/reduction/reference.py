@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import platform
 import time
 
 import numpy as np
@@ -24,7 +25,21 @@ def run(variant: str, size: int, warmup: int, iterations: int, benchmark: bool) 
         raise ValueError(f"unknown reduction variant: {variant}")
     actual = float(function(values))
     error = abs(actual - expected)
-    result = {"correctness_pass": bool(np.isclose(actual, expected, rtol=2.0e-5, atol=2.0e-3)), "max_abs_error": error, "variant": variant, "size": size}
+    result = {
+        "correctness_pass": bool(np.isclose(actual, expected, rtol=2.0e-5, atol=2.0e-3)),
+        "max_abs_error": error,
+        "variant": variant,
+        "size": size,
+        "status": "CORRECTNESS_ONLY_CPU",
+        "backend": "numpy_cpu_reference",
+        "hardware_mode": "cpu_only",
+        "device": platform.processor() or platform.machine(),
+        "dtype": str(values.dtype),
+        "warmup": warmup,
+        "iterations": iterations,
+        "timer": "perf_counter_ns",
+        "cuda_validated": False,
+    }
     if benchmark:
         for _ in range(warmup):
             function(values)
@@ -44,9 +59,18 @@ def main() -> None:
     parser.add_argument("--size", type=int, required=True)
     parser.add_argument("--warmup", type=int, default=3)
     parser.add_argument("--iterations", type=int, default=8)
+    parser.add_argument("--mode", choices=("correctness", "benchmark"))
     parser.add_argument("--correctness", action="store_true")
     parser.add_argument("--benchmark", action="store_true")
     args = parser.parse_args()
+    if args.mode and (args.correctness or args.benchmark):
+        parser.error("use --mode or an explicit --correctness/--benchmark flag, not both")
+    if args.mode == "correctness":
+        args.correctness = True
+    elif args.mode == "benchmark":
+        args.benchmark = True
+    if args.correctness == args.benchmark:
+        parser.error("select exactly one of --mode correctness|benchmark")
     print(json.dumps(run(args.variant, args.size, args.warmup, args.iterations, args.benchmark)))
 
 

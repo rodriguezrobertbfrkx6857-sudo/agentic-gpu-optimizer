@@ -28,6 +28,7 @@ class WorkloadConfig:
     workload_dir: Path
     fallback_script: Path
     source_file: Path
+    candidate_source_file: Path
     input_size: int
     baseline_variant: str
     candidate: CandidateConfig
@@ -47,6 +48,9 @@ def load_config(path: str | Path) -> WorkloadConfig:
         workload_dir=workload_dir,
         fallback_script=(workload_dir / raw.get("fallback_script", "reference.py")).resolve(),
         source_file=(workload_dir / raw.get("source_file", "baseline.cu")).resolve(),
+        candidate_source_file=(
+            workload_dir / raw.get("candidate_source_file", "candidate.cu")
+        ).resolve(),
         input_size=int(raw.get("input_size", 256)),
         baseline_variant=str(raw.get("baseline_variant", "baseline")),
         candidate=CandidateConfig(
@@ -63,4 +67,3 @@ def load_config(path: str | Path) -> WorkloadConfig:
             low_improvement_policy=str(gate_raw.get("low_improvement_policy", "inconclusive")),
         ),
     )
-

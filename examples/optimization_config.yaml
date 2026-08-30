@@ -1,6 +1,7 @@
 name: example_optimization
 workload_dir: ../workloads/transpose
 source_file: baseline.cu
+candidate_source_file: candidate.cu
 fallback_script: reference.py
 input_size: 192
 baseline_variant: baseline
@@ -9,11 +10,51 @@ candidate:
   variant: transpose_tiled_padded
   rationale: Use a shared-memory 32x32 tile with one-column padding so global accesses are coalesced and shared-memory bank conflicts are reduced.
   patch: |
-    --- a/workloads/transpose/baseline.cu
-    +++ b/workloads/transpose/baseline.cu
-    @@
-    - naive strided output stores
-    + 32x33 shared-memory tile with a synchronized transposed store
+    diff --git a/candidate.cu b/candidate.cu
+    new file mode 100644
+    --- /dev/null
+    +++ b/candidate.cu
+    @@ -0,0 +1,40 @@
+    +#include "runner_common.cuh"
+    +
+    +namespace {
+    +
+    +__global__ void transpose_tiled_padded_kernel(const float* input, float* output, int rows, int cols) {
+    +    __shared__ float tile[32][33];
+    +    const int col = blockIdx.x * 32 + threadIdx.x;
+    +    const int row = blockIdx.y * 32 + threadIdx.y;
+    +    if (row < rows && col < cols) {
+    +        tile[threadIdx.y][threadIdx.x] = input[row * cols + col];
+    +    }
+    +    __syncthreads();
+    +    const int output_col = blockIdx.y * 32 + threadIdx.x;
+    +    const int output_row = blockIdx.x * 32 + threadIdx.y;
+    +    if (output_row < cols && output_col < rows) {
+    +        output[output_row * rows + output_col] = tile[threadIdx.x][threadIdx.y];
+    +    }
+    +}
+    +
+    +void launch_transpose_tiled_padded(const float* input, float* output, int rows, int cols,
+    +                                   cudaStream_t stream) {
+    +    constexpr int tile = 32;
+    +    const dim3 block(tile, tile);
+    +    const dim3 grid((cols + tile - 1) / tile, (rows + tile - 1) / tile);
+    +    transpose_tiled_padded_kernel<<<grid, block, 0, stream>>>(input, output, rows, cols);
+    +    OPTIMIZER_CUDA_CHECK(cudaGetLastError());
+    +}
+    +
+    +}  // namespace
+    +
+    +int main(int argc, char** argv) {
+    +    try {
+    +        const auto options = optimizer_transpose::parse_options(argc, argv);
+    +        return optimizer_transpose::run_workload(
+    +            options, "transpose_tiled_padded", launch_transpose_tiled_padded);
+    +    } catch (const std::exception& error) {
+    +        std::cerr << error.what() << '\n';
+    +        return 1;
+    +    }
+    +}
 benchmark:
   warmup: 3
   iterations: 8
@@ -21,4 +62,3 @@ gate:
   min_improvement: 0.03
   max_coefficient_of_variation: 0.25
   low_improvement_policy: inconclusive
-
