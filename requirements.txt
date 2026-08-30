@@ -1,0 +1,4 @@
+numpy>=1.26
+PyYAML>=6
+pytest>=8
+

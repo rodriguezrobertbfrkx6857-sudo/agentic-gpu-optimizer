@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentic-gpu-optimizer"
+version = "0.1.0"
+description = "A benchmark-driven closed-loop workflow for AI-assisted GPU kernel optimization."
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.26", "PyYAML>=6"]
+
+[project.scripts]
+gpu-optimize = "optimizer.orchestrator:main"
+
+[tool.setuptools.packages.find]
+include = ["optimizer*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+

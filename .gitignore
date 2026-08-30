@@ -1,0 +1,13 @@
+__pycache__/
+.pytest_cache/
+.venv/
+*.pyc
+.idea/
+.vscode/
+build/
+*.o
+*.obj
+*.exe
+*.dll
+runs/*/
+
