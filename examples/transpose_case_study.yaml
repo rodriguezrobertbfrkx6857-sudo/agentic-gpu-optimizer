@@ -1,0 +1,24 @@
+name: transpose_case_study
+workload_dir: ../workloads/transpose
+source_file: baseline.cu
+fallback_script: reference.py
+input_size: 192
+baseline_variant: baseline
+candidate:
+  name: tiled_transpose_hypothesis
+  variant: transpose_tiled_padded
+  rationale: Replace scalar strided transpose stores with a coalesced shared-memory tile and one-column padding to reduce bank conflicts.
+  patch: |
+    --- a/workloads/transpose/baseline.cu
+    +++ b/workloads/transpose/baseline.cu
+    @@
+    - output[col * rows + row] = input[row * cols + col]
+    + shared float tile[32][33]; load, synchronize, and write the transposed tile
+benchmark:
+  warmup: 3
+  iterations: 8
+gate:
+  min_improvement: 0.03
+  max_coefficient_of_variation: 0.25
+  low_improvement_policy: inconclusive
+

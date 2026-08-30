@@ -1,0 +1,7 @@
+{
+  "workload": "reduction",
+  "variants": ["baseline", "reduction_precision_candidate"],
+  "shape": [1048576],
+  "reference": "float64 NumPy sum with tolerance"
+}
+

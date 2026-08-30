@@ -1,0 +1,7 @@
+{
+  "workload": "reduction",
+  "warmup": 3,
+  "iterations": 8,
+  "timer": "perf_counter_ns on CPU fallback; CUDA Event for a future CUDA runner"
+}
+

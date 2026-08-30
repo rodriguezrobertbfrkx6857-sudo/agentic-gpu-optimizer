@@ -1,0 +1,24 @@
+name: reduction_case_study
+workload_dir: ../workloads/reduction
+source_file: baseline.cu
+fallback_script: reference.py
+input_size: 1048576
+baseline_variant: baseline
+candidate:
+  name: precision_reduction_hypothesis
+  variant: reduction_precision_candidate
+  rationale: Try a double-precision accumulation candidate to reduce summation error; the gate must prove that the added conversion and precision cost are justified.
+  patch: |
+    --- a/workloads/reduction/baseline.cu
+    +++ b/workloads/reduction/baseline.cu
+    @@
+    - atomicAdd(output, input[index])
+    + atomicAdd(double_output, static_cast<double>(input[index]))
+benchmark:
+  warmup: 3
+  iterations: 8
+gate:
+  min_improvement: 0.03
+  max_coefficient_of_variation: 0.25
+  low_improvement_policy: inconclusive
+

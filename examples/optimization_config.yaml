@@ -1,0 +1,24 @@
+name: example_optimization
+workload_dir: ../workloads/transpose
+source_file: baseline.cu
+fallback_script: reference.py
+input_size: 192
+baseline_variant: baseline
+candidate:
+  name: tiled_transpose_hypothesis
+  variant: transpose_tiled_padded
+  rationale: Use a shared-memory 32x32 tile with one-column padding so global accesses are coalesced and shared-memory bank conflicts are reduced.
+  patch: |
+    --- a/workloads/transpose/baseline.cu
+    +++ b/workloads/transpose/baseline.cu
+    @@
+    - naive strided output stores
+    + 32x33 shared-memory tile with a synchronized transposed store
+benchmark:
+  warmup: 3
+  iterations: 8
+gate:
+  min_improvement: 0.03
+  max_coefficient_of_variation: 0.25
+  low_improvement_policy: inconclusive
+

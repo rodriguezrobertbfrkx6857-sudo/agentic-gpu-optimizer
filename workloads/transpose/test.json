@@ -1,0 +1,7 @@
+{
+  "workload": "transpose",
+  "variants": ["baseline", "transpose_tiled_padded"],
+  "shape": [192, 192],
+  "reference": "exact transpose"
+}
+
