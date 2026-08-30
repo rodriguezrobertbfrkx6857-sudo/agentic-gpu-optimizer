@@ -11,6 +11,7 @@ from optimizer.evaluator.decision import decide
 from optimizer.prompts import render_optimization_prompt
 from optimizer.providers.manual import ManualProvider
 from optimizer.runner.benchmark import run_benchmark
+from optimizer.runner.apply_candidate import apply_candidate
 from optimizer.runner.build import build_workload
 from optimizer.runner.correctness import run_correctness
 from optimizer.runner.profiler import profile_workload
@@ -51,6 +52,7 @@ def run(config_path: str | Path, output_root: str | Path = "runs", provider=None
 
     candidate = provider.suggest(config)
     (run_dir / "candidate.patch").write_text(candidate.patch.rstrip() + "\n", encoding="utf-8")
+    _write_json(run_dir / "candidate_application.json", apply_candidate(candidate, run_dir))
     candidate_build = build_workload(config, candidate.variant)
     candidate_correctness = run_correctness(config, candidate.variant)
     candidate_benchmark = run_benchmark(config, candidate.variant)
@@ -79,4 +81,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

@@ -40,7 +40,7 @@ Each run writes the requested artifacts under `runs/YYYYMMDD_HHMMSS/`. The two p
 - Transpose: scalar CPU reference versus a NumPy analogue of the coalesced 32×33 tiled transpose. The correctness gate runs before timing; the measured decision is generated from the current host.
 - Reduction: a fast float32 baseline versus a precision-oriented float64 conversion candidate. It is intentionally useful as a rejection example when added precision does not pay for its conversion cost.
 
-Inspect `decision.json`, `correctness.json`, `benchmark.json`, `optimization_prompt.md`, and `candidate.patch` in each experiment directory. No decision is based on the candidate text alone.
+Inspect `decision.json`, `correctness.json`, `benchmark.json`, `optimization_prompt.md`, `candidate.patch`, and `candidate_application.json` in each experiment directory. The controlled runner applies a proposal by selecting an explicit registered workload variant; it does not execute arbitrary patch text. No decision is based on the candidate text alone.
 
 ## Providers
 
@@ -51,4 +51,3 @@ Inspect `decision.json`, `correctness.json`, `benchmark.json`, `optimization_pro
 The `.cu` files are small standalone workload sources designed to be integrated with a target-specific build. The current runner executes the Python reference path when CUDA is unavailable and records `NOT BENCHMARKED ON CURRENT HARDWARE` for GPU claims. Nsight data is reported as unavailable when `ncu` and `nsys` are absent; no profiler counters are inferred from wall-clock timing.
 
 This repository is a workflow demonstration, not an autonomous code-trust mechanism. AI-generated code is never accepted without validation, and the decision gate is the source of truth.
-

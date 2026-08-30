@@ -17,6 +17,7 @@ ARTIFACTS = [
     "profiler_summary.json",
     "optimization_prompt.md",
     "candidate.patch",
+    "candidate_application.json",
     "correctness.json",
     "benchmark.json",
     "decision.json",

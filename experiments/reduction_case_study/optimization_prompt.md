@@ -10,7 +10,7 @@ The candidate is a hypothesis. It must compile, pass the workload correctness ga
 - Fallback runner: `reference.py`
 - Input size: `1048576`
 - Baseline variant: `baseline`
-- Baseline metrics: `{'correctness_pass': True, 'max_abs_error': 2.7328048417984974e-05, 'variant': 'baseline', 'size': 1048576, 'status': 'BENCHMARKED_CPU_ONLY', 'median_ms': 0.19345, 'mean_ms': 0.193075, 'min_ms': 0.1878, 'std_ms': 0.0027738736452837935, 'command': ['python', 'reference.py', '--variant', 'baseline', '--size', '1048576', '--warmup', '3', '--iterations', '8', '--benchmark'], 'return_code': 0}`
+- Baseline metrics: `{'correctness_pass': True, 'max_abs_error': 2.7328048417984974e-05, 'variant': 'baseline', 'size': 1048576, 'status': 'BENCHMARKED_CPU_ONLY', 'median_ms': 0.1846, 'mean_ms': 0.18503750000000002, 'min_ms': 0.1787, 'std_ms': 0.005502485233964746, 'command': ['python', 'reference.py', '--variant', 'baseline', '--size', '1048576', '--warmup', '3', '--iterations', '8', '--benchmark'], 'return_code': 0}`
 - Profiler summary: `{'available': False, 'status': 'NOT_AVAILABLE', 'note': 'Nsight profiling was not available in the current environment.', 'workload': 'reduction_case_study'}`
 
 ## Candidate request

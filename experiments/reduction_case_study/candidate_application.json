@@ -1,0 +1,8 @@
+{
+  "status": "APPLIED",
+  "mode": "isolated_registered_variant",
+  "candidate": "precision_reduction_hypothesis",
+  "variant": "reduction_precision_candidate",
+  "patch_artifact": "candidate.patch",
+  "note": "The controlled case-study runner applies a provider proposal by selecting an explicit workload variant; arbitrary source execution is not enabled."
+}

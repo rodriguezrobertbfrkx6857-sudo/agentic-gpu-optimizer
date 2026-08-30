@@ -2,9 +2,9 @@
 
 - Decision: `REJECT`
 - Reason: candidate regressed or benchmark metrics were invalid
-- Baseline median: `0.19345 ms`
-- Candidate median: `3.04645 ms`
-- Speedup: `0.06350013950663888x`
+- Baseline median: `0.1846 ms`
+- Candidate median: `2.463 ms`
+- Speedup: `0.07494924888347543x`
 - Correctness: `PASS`
 - Hardware mode: `cpu_only`
 

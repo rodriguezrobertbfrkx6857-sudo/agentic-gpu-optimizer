@@ -1,0 +1,8 @@
+{
+  "status": "APPLIED",
+  "mode": "isolated_registered_variant",
+  "candidate": "tiled_transpose_hypothesis",
+  "variant": "transpose_tiled_padded",
+  "patch_artifact": "candidate.patch",
+  "note": "The controlled case-study runner applies a provider proposal by selecting an explicit workload variant; arbitrary source execution is not enabled."
+}

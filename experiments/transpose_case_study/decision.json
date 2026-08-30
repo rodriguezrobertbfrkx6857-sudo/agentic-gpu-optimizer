@@ -23,12 +23,12 @@
   },
   "performance_gate": {
     "status": "PASS",
-    "baseline_median_ms": 4.325,
-    "candidate_median_ms": 0.01405,
-    "improvement": 0.9967514450867052,
-    "speedup": 307.82918149466195,
-    "baseline_cv": 0.10012094916595038,
-    "candidate_cv": 0.025051152335959205,
+    "baseline_median_ms": 4.27195,
+    "candidate_median_ms": 0.01895,
+    "improvement": 0.9955640866583176,
+    "speedup": 225.43271767810026,
+    "baseline_cv": 0.03575660390441965,
+    "candidate_cv": 0.03334165806359824,
     "stable": true,
     "threshold": 0.03,
     "max_cv": 0.25

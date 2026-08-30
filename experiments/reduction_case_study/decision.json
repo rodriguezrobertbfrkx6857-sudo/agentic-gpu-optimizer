@@ -23,12 +23,12 @@
   },
   "performance_gate": {
     "status": "FAIL",
-    "baseline_median_ms": 0.19345,
-    "candidate_median_ms": 3.04645,
-    "improvement": -14.747996898423365,
-    "speedup": 0.06350013950663888,
-    "baseline_cv": 0.014366819346284053,
-    "candidate_cv": 0.15704650594346162,
+    "baseline_median_ms": 0.1846,
+    "candidate_median_ms": 2.463,
+    "improvement": -12.342361863488625,
+    "speedup": 0.07494924888347543,
+    "baseline_cv": 0.02973713562907381,
+    "candidate_cv": 0.2331061081996846,
     "stable": true,
     "threshold": 0.03,
     "max_cv": 0.25
