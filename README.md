@@ -1,53 +1,51 @@
-# agentic-gpu-optimizer
+# Agentic GPU Optimizer：AI 辅助 GPU Kernel 优化闭环
 
-A benchmark-driven closed-loop workflow for AI-assisted GPU kernel optimization.
+一个以基准为驱动的 AI 辅助 GPU Kernel 优化工作流。系统把“优化建议”视为可证伪假设，依次经过构建、正确性、基准、可选 profiler 发现和明确决策门禁；`Manual Provider` 让闭环无需 API key 也能复现，`Command Provider` 则允许在用户明确配置 `GPU_OPTIMIZER_AGENT_COMMAND` 后接入外部 coding-agent CLI。
 
-The system treats an optimization proposal as a hypothesis and runs it through build, correctness, benchmark, optional profiler discovery, and explicit decision gates. A Manual Provider makes the loop reproducible without an API key; a Command Provider can invoke an installed coding-agent CLI through `GPU_OPTIMIZER_AGENT_COMMAND` when one is intentionally configured.
+当前案例使用 CPU fallback，因为本机没有 NVIDIA 驱动和 CUDA Toolkit。每份报告都区分 `cpu_only` 与 CUDA 执行，CUDA 源码仍保留在各 workload 目录中。
 
-The checked-in case studies use CPU fallbacks because the current host has no NVIDIA driver or CUDA Toolkit. The CUDA workload sources remain in each workload directory, and every report distinguishes `cpu_only` from a CUDA run.
-
-## Workflow
+## 工作流
 
 ```text
-workload + test/benchmark spec
+工作负载 + 测试/基准规格
           ↓
-build → correctness → benchmark → profiler discovery
+构建 → 正确性 → 基准 → profiler 发现
           ↓
-provider hypothesis → validate/apply unified diff → candidate build → correctness → benchmark
+生成假设 → 校验/应用统一 diff → 候选构建 → 正确性 → 基准
           ↓
-                  ACCEPT / REJECT / INCONCLUSIVE
+             ACCEPT / REJECT / INCONCLUSIVE
 ```
 
-The acceptance default is correctness pass, at least 3% median improvement, and acceptable coefficient of variation. A correct regression is rejected; a correct but unstable or sub-threshold candidate is inconclusive. Thresholds live in the YAML configuration.
+默认接受条件是正确性通过、中位时间至少改善 3%、变异系数可接受。正确但回退的候选会被拒绝；正确但不稳定或未达到阈值的候选标记为 `INCONCLUSIVE`，阈值位于 YAML 配置中。
 
-## Quick start
+## 快速开始
 
 ```powershell
 python -m pytest
 python scripts/run_case_studies.py
 ```
 
-To run one configuration:
+运行单个配置：
 
 ```powershell
 python -m optimizer.orchestrator examples/transpose_case_study.yaml
 ```
 
-Each run writes the requested artifacts under `runs/YYYYMMDD_HHMMSS/`. The two public-facing summaries and artifacts are copied to [experiments/transpose_case_study](experiments/transpose_case_study) and [experiments/reduction_case_study](experiments/reduction_case_study). Candidate code is applied only inside a fresh run-local workspace after path validation and `git apply --check`.
+每次运行会在 `runs/YYYYMMDD_HHMMSS/` 下写入请求的证据；面向公开展示的摘要位于 [`experiments/transpose_case_study`](experiments/transpose_case_study) 和 [`experiments/reduction_case_study`](experiments/reduction_case_study)。候选代码只有在全新的运行目录、路径校验和 `git apply --check` 通过后才会应用。
 
-## Case studies
+## 案例与证据
 
-- Transpose: scalar CPU reference versus a tiled NumPy analogue of the coalesced 32×33 CUDA transpose. The correctness gate runs before timing; the measured decision is generated from the current host, and CPU-only speedups are not CUDA claims.
-- Reduction: a fast float32 baseline versus a precision-oriented float64 conversion candidate. It is intentionally useful as a rejection example when added precision does not pay for its conversion cost.
+- 转置：标量 CPU 参考与模拟合并访问的 32×33 CUDA 转置的 NumPy 候选。正确性门禁先于计时，CPU-only 加速比不会被包装成 CUDA 结论。
+- 归约：快速 float32 基线与强调精度的 float64 转换候选；当转换成本超过收益时，它提供一个有意义的拒绝案例。
 
-Inspect `environment.json`, `source_hashes.json`, `baseline_build.json`, `candidate_build.json`, `decision.json`, `correctness.json`, `benchmark.json`, `optimization_prompt.md`, `candidate.patch`, and `candidate_application.json` in each experiment directory. The runner records whether the real unified diff was applied, whether `nvcc` built the candidate, and which backend produced the timing. No decision is based on the candidate text alone.
+每个实验目录都保存 `environment.json`、`source_hashes.json`、`baseline_build.json`、`candidate_build.json`、`decision.json`、`correctness.json`、`benchmark.json`、`optimization_prompt.md`、`candidate.patch` 和 `candidate_application.json`。运行器记录统一 diff 是否真正应用、`nvcc` 是否构建成功以及时间来自哪个后端；决策不依据候选文本本身。
 
-## Providers
+## Provider 与安全边界
 
-`ManualProvider` is the default and does not contact a model. `CommandProvider` is an adapter for an external command and never reads or writes credentials. Set `GPU_OPTIMIZER_AGENT_COMMAND` only when the command is installed and the user explicitly wants to use it. The candidate still must pass the same gates.
+`ManualProvider` 默认不联系模型。`CommandProvider` 只是外部命令适配器，不读取或写入凭据；只有在命令已安装且用户明确想使用时才设置 `GPU_OPTIMIZER_AGENT_COMMAND`。候选仍必须通过同一套门禁。
 
-## CUDA path and limitations
+这是一个工作流演示，不是自动信任代码的机制。AI 生成代码永远不能跳过验证，最终决策以证据门禁为准。
 
-The `.cu` files are standalone workload sources with a common CLI. On a CUDA host, the runner builds baseline and candidate executables with `nvcc`, runs correctness before benchmarking, times kernels with CUDA Events, and can invoke `ncu` or `nsys`. On the current CPU-only host it executes the Python reference path, records `NOT BENCHMARKED ON CURRENT HARDWARE`, and marks the decision `INCONCLUSIVE` when a CPU-only improvement cannot establish CUDA acceptance. No profiler counters are inferred from wall-clock timing.
+## CUDA 路径与限制
 
-This repository is a workflow demonstration, not an autonomous code-trust mechanism. AI-generated code is never accepted without validation, and the decision gate is the source of truth.
+CUDA 主机上，运行器用 `nvcc` 构建基线和候选，用 CUDA Events 计时，并可调用 `ncu` 或 `nsys`。当前 CPU-only 主机执行 Python 参考路径，写入 `NOT BENCHMARKED ON CURRENT HARDWARE`，当 CPU 改善无法证明 CUDA 接受时标记 `INCONCLUSIVE`。不会从 wall-clock 时间推断 profiler counter，也不声称任何未实际运行的 NVIDIA 或 Biren 结果。
