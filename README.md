@@ -4,6 +4,10 @@
 
 当前案例使用 CPU fallback，因为本机没有 NVIDIA 驱动和 CUDA Toolkit。每份报告都区分 `cpu_only` 与 CUDA 执行，CUDA 源码仍保留在各 workload 目录中。
 
+[![CI](https://github.com/rodriguezrobertbfrkx6857-sudo/agentic-gpu-optimizer/actions/workflows/ci.yml/badge.svg)](https://github.com/rodriguezrobertbfrkx6857-sudo/agentic-gpu-optimizer/actions/workflows/ci.yml)
+
+> 评委速览：这是作品集的工程闭环旗舰项目，把 AI 生成的优化建议当作可证伪假设，串起 patch 校验、隔离构建、正确性、基准、稳定性和 `ACCEPT / REJECT / INCONCLUSIVE` 决策。当前案例保留真实的 CPU-only 边界，GPU 门禁需要在 CUDA 主机执行。
+
 ## 工作流
 
 ```text
